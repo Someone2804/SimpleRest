@@ -1,7 +1,5 @@
 package com.SimpleRest.SimpleRestAPI.store.dto;
 
-import com.SimpleRest.SimpleRestAPI.store.entity.ERole;
-import com.SimpleRest.SimpleRestAPI.store.entity.Image;
 import com.SimpleRest.SimpleRestAPI.store.entity.Role;
 import com.SimpleRest.SimpleRestAPI.store.entity.User;
 import lombok.AccessLevel;
