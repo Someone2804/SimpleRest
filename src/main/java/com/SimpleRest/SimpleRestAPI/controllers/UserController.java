@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import com.SimpleRest.SimpleRestAPI.service.UserService;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,9 +39,10 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{id}/delete")
-    public void deleteOne(@PathVariable long id, HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> deleteOne(@PathVariable long id){
         userService.deleteUserById(id);
-        response.setStatus(200);
-        response.sendRedirect("/users");
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", "/users");
+        return new ResponseEntity<String>(httpHeaders, HttpStatus.OK);
     }
 }
