@@ -56,5 +56,4 @@ public class PostController {
         httpHeaders.add("Location", "/posts");
         return new ResponseEntity<String>(httpHeaders, HttpStatus.OK);
     }
-
 }
