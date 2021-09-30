@@ -49,17 +49,19 @@ public class PostServiceImpl implements PostService {
     public PostDTO savePost(Post post, List<MultipartFile> multipartFile) {
         Image image;
         List<Image> images = new ArrayList<>();
-        for (MultipartFile e : multipartFile) {
-            try {
-                String name = UUID.randomUUID() + "_" + e.getOriginalFilename();
-                String s = path + name;
-                e.transferTo(new File(s));
-                image = new Image();
-                image.setName(name);
-                image.setType(e.getContentType());
-                images.add(image);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
+        if(multipartFile != null) {
+            for (MultipartFile e : multipartFile) {
+                try {
+                    String name = UUID.randomUUID() + "_" + e.getOriginalFilename();
+                    String s = path + name;
+                    e.transferTo(new File(s));
+                    image = new Image();
+                    image.setName(name);
+                    image.setType(e.getContentType());
+                    images.add(image);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         }
         post.setImages(images);

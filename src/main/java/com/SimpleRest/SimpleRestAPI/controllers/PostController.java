@@ -37,12 +37,14 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createPost(@RequestPart("images") List<MultipartFile> multipartFile, @RequestPart String head, @RequestPart String text){
+    public ResponseEntity<?> createPost(@RequestPart(value = "images", required = false) List<MultipartFile> multipartFile, @RequestPart String head, @RequestPart String text){
         Post post = new Post();
         post.setHead(head);
         post.setText(text);
-        postService.savePost(post, multipartFile);
-        return ResponseEntity.ok(200);
+        PostDTO postDTO = postService.savePost(post, multipartFile);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", "/posts/" + postDTO.getId());
+        return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
