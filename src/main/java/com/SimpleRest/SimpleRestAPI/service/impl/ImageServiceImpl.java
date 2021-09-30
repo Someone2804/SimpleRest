@@ -31,6 +31,10 @@ public class ImageServiceImpl implements ImageService {
         return ImageDTO.imageToImageDTO(imageRepo.findById(id).orElseThrow(() -> new NotFoundException("User id not found")));
     }
 
+    @Override
+    public ImageDTO findByName(String name) {
+        return ImageDTO.imageToImageDTO(imageRepo.findByName(name).orElseThrow(() -> new NotFoundException("User id not found")));
+    }
 
     @Override
     public void deleteImage(long id) {
