@@ -2,7 +2,7 @@ package com.SimpleRest.SimpleRestAPI.store.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
-import lombok.*;
+import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

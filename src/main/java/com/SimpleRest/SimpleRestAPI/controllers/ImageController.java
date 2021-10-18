@@ -4,6 +4,7 @@ package com.SimpleRest.SimpleRestAPI.controllers;
 import com.SimpleRest.SimpleRestAPI.service.ImageService;
 import com.SimpleRest.SimpleRestAPI.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,8 @@ public class ImageController {
 
     ImageService imageService;
     PostService postService;
+    @Value("${images.path}")
+    String path;
 
     @Autowired
     public ImageController(ImageService imageService, PostService postService) {

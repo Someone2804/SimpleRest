@@ -7,7 +7,6 @@ import com.SimpleRest.SimpleRestAPI.store.repo.ImageRepo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,8 +17,6 @@ import java.io.InputStream;
 public class ImageServiceImpl implements ImageService {
 
     final ImageRepo imageRepo;
-    @Value("${images.path}")
-    String path;
 
     @Autowired
     public ImageServiceImpl(ImageRepo imageRepo) {
