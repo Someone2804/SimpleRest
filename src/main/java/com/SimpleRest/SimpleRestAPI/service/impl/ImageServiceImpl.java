@@ -7,16 +7,22 @@ import com.SimpleRest.SimpleRestAPI.store.repo.ImageRepo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ImageServiceImpl implements ImageService {
 
     final ImageRepo imageRepo;
+
+    @Value("${images.path}")
+    String path;
 
     @Autowired
     public ImageServiceImpl(ImageRepo imageRepo) {
@@ -41,15 +47,11 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public byte[] imageToByte(String name) {
-        InputStream in = getClass().getResourceAsStream("/templates/" + name);
-        if(in == null){
-            throw new NotFoundException("Image " + name + " not found");
-        }
-        byte[] media = null;
+        byte[] media;
         try {
-            media = in.readAllBytes();
+            media = Files.readAllBytes(Path.of(path + "/" + name));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new NotFoundException("Image " + name + " not found");
         }
 
         return media;
