@@ -32,6 +32,7 @@ public class PostDTO {
         return builder()
                 .id(post.getId())
                 .head(post.getHead())
+                .text(post.getText())
                 .images(imageDTOList(post.getImages()))
                 .user(post.getUser())
                 .build();
