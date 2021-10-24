@@ -24,8 +24,8 @@ public class Post {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
             @JoinTable(name = "posts_images",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id"))
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id"))
     @EqualsAndHashCode.Exclude
     List<Image> images;
 
