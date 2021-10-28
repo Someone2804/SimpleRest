@@ -26,15 +26,17 @@ public class PostDTO {
 
     List<ImageDTO> images;
 
-    User user;
+    UserDTO user;
 
     public static PostDTO postToPostDTO(Post post){
+        UserDTO userDTO = UserDTO.userToUserDTO(post.getUser());
+        userDTO.setPosts(null);
         return builder()
                 .id(post.getId())
                 .head(post.getHead())
                 .text(post.getText())
                 .images(imageDTOList(post.getImages()))
-                .user(post.getUser())
+                .user(userDTO)
                 .build();
     }
 

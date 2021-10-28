@@ -1,7 +1,6 @@
 package com.SimpleRest.SimpleRestAPI.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,10 +19,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                     .antMatchers("/registration").not().fullyAuthenticated()
-                    .anyRequest().permitAll()
+                    .anyRequest().authenticated()
                 .and()
-                    .formLogin()
-                    .loginPage("/login").permitAll()
+                    .httpBasic()
                 .and()
                     .logout().permitAll();
     }

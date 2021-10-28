@@ -11,12 +11,15 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -46,7 +49,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO savePost(Post post, List<MultipartFile> multipartFile) {
+    public PostDTO savePost(Post post, List<MultipartFile> multipartFile, User user) {
         Image image;
         List<Image> images = new ArrayList<>();
         if(multipartFile != null) {
@@ -65,6 +68,7 @@ public class PostServiceImpl implements PostService {
             }
         }
         post.setImages(images);
+        post.setUser(user);
         postRepo.saveAndFlush(post);
         return PostDTO.postToPostDTO(postRepo.saveAndFlush(post));
     }

@@ -60,9 +60,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDTO saveUser(@NotNull User user) {
-        userRepo.findByUsername(user.getUsername())
-                .orElseThrow(() -> new AlreadyExistException("Username " + user.getUsername() + " already exist."));
-
+        if(userRepo.findByUsername(user.getUsername()).isPresent()){
+            throw new AlreadyExistException("Username " + user.getUsername() + " already exist.");
+        }
         user.setPassword(encoder.encode(user.getPassword()));
         user.setPosts(new ArrayList<Post>());
         Set<Role> roles = new HashSet<Role>();

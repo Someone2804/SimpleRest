@@ -4,11 +4,13 @@ import com.SimpleRest.SimpleRestAPI.service.ImageService;
 import com.SimpleRest.SimpleRestAPI.service.PostService;
 import com.SimpleRest.SimpleRestAPI.store.dto.PostDTO;
 import com.SimpleRest.SimpleRestAPI.store.entity.Post;
+import com.SimpleRest.SimpleRestAPI.store.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,11 +39,11 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createPost(@RequestPart(value = "images", required = false) List<MultipartFile> multipartFile, @RequestPart String head, @RequestPart String text){
+    public ResponseEntity<?> createPost(@RequestPart(value = "images", required = false) List<MultipartFile> multipartFile, @RequestParam String head, @RequestParam String text, @AuthenticationPrincipal User user){
         Post post = new Post();
         post.setHead(head);
         post.setText(text);
-        PostDTO postDTO = postService.savePost(post, multipartFile);
+        PostDTO postDTO = postService.savePost(post, multipartFile, user);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/posts/" + postDTO.getId());
         return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
