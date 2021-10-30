@@ -14,7 +14,7 @@ public class ServiceHandler {
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ServiceException notFound(NotFoundException ex){
-        return ex;
+    public String notFound(NotFoundException ex){
+        return ex.getMessage();
     }
 }
