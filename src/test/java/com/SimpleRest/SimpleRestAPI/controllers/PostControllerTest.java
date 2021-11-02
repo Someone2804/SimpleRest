@@ -5,16 +5,14 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import net.minidev.json.JSONArray;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -27,9 +25,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithUserDetails("Someone")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @TestPropertySource("/test-application.properties")
 @Sql(value = {"/create-post-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -37,13 +35,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PostControllerTest {
 
     @Autowired
-    PostController postController;
-
-    @Autowired
-    ImageController imageController;
-
-    @Autowired
     MockMvc mockMvc;
+
+    final String path = "C:\\Users\\ose19\\Desktop\\Images\\";
 
     @Test
     public void PostListTest() throws Exception {
@@ -52,7 +46,8 @@ public class PostControllerTest {
                 .andExpect(jsonPath("$.length()").value(3))
                 .andExpect(jsonPath("$[0].id").value(1))
                 .andExpect(jsonPath("$[0].head").value("firsttest"))
-                .andExpect(jsonPath("$[0].text").value("firstmessage"));
+                .andExpect(jsonPath("$[0].text").value("firstmessage"))
+                .andExpect(jsonPath("$[0].user.name").value("Someone"));
     }
 
     @Test
@@ -60,10 +55,10 @@ public class PostControllerTest {
         MockHttpServletRequestBuilder multipart = multipart("/posts/create")
                 .file(new MockMultipartFile("images",
                         "secfloor.png",
-                        "image/png", Files.readAllBytes(Path.of("C:\\Users\\ose19\\Desktop\\Images\\secfloor.png"))))
+                        "image/png", Files.readAllBytes(Path.of(path + "secfloor.png"))))
                 .file(new MockMultipartFile("images",
                         "floor.png",
-                        "image/png", Files.readAllBytes(Path.of("C:\\Users\\ose19\\Desktop\\Images\\floor.png"))))
+                        "image/png", Files.readAllBytes(Path.of(path + "floor.png"))))
                 .param("head", "testhead")
                 .param("text", "testtext");
 
